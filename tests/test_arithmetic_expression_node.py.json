@@ -1,0 +1,96 @@
+{
+    "standard_test": {
+        "name": "net",
+        "nodes": [
+            {
+                "id": "A",
+                "type": "arithmetic",
+                "expression": "#expression#"
+            }
+        ],
+        "inputs": [
+            {
+                "id": "x1",
+                "size": 1
+            },
+            {
+                "id": "x2",
+                "size": 1
+            }
+        ],
+        "optimizer": "adam",
+        "metrics": [
+            "mse",
+            "mae"
+        ],
+        "loss": "mse",
+        "network": "net",
+        "outputs": [
+            "out1"
+        ]
+    },
+    "other_dimensions": {
+        "name": "net",
+        "nodes": [
+            {
+                "id": "A",
+                "type": "arithmetic",
+                "expression": "#expression#"
+            }
+        ],
+        "inputs": [
+            {
+                "id": "x1",
+                "size": 2
+            },
+            {
+                "id": "x2",
+                "size": 1
+            }
+        ],
+        "optimizer": "adam",
+        "metrics": [
+            "mse",
+            "mae"
+        ],
+        "loss": "mse",
+        "network": "net",
+        "outputs": [
+            "out1"
+        ]
+    },
+    "non_asceding_variable_order": {
+        "name": "net",
+        "nodes": [
+            {
+                "id": "A",
+                "type": "arithmetic",
+                "expression": "out1 = [c, b, a]"
+            }
+        ],
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            },
+            {
+                "id": "b",
+                "size": 1
+            },
+            {
+                "id": "c",
+                "size": 1
+            }
+        ],
+        "optimizer": "adam",
+        "metrics": [
+            "mse",
+            "mae"
+        ],
+        "loss": "mse",
+        "network": "net",
+        "outputs": [
+            "out1"
+        ]
+    }
+}

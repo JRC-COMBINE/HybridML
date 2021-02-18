@@ -1,0 +1,86 @@
+{
+    "name": "theoph_demo_2_compartments",
+    "comment": "Showing the new ode-node at the example of modeling the theoph data",
+    "inputs": [
+        {
+            "id": "wt",
+            "size": 1,
+            "comment": "Patient's weight"
+        },
+        {
+            "id": "dose",
+            "size": 1,
+            "comment": "Patient's inital Dose"
+        },
+        {
+            "id": "t",
+            "size": null,
+            "comment": "Patient's time series. Atm, the size of every series has to be the same."
+        }
+    ],
+    "nodes": [
+        {
+            "id": "expand_x_init",
+            "type": "arithmetic",
+            "expression": "x_init = dose, 0",
+            "comment": "Form x_init, containing two dimensions for two compartments."
+        },
+        {
+            "id": "A",
+            "type": "nn",
+            "layers": [
+                {
+                    "size": 1,
+                    "activation": "softplus"
+                }
+            ],
+            "inputs": [
+                "wt"
+            ],
+            "outputs": [
+                "ka"
+            ]
+        },
+        {
+            "id": "B",
+            "type": "nn",
+            "layers": [
+                {
+                    "size": 1,
+                    "activation": "softplus"
+                }
+            ],
+            "inputs": [
+                "wt"
+            ],
+            "outputs": [
+                "ke"
+            ]
+        },
+        {
+            "id": "ode_node",
+            "type": "casadi_linear_ode",
+            "time_series_input": "t",
+            "initial_value_input": "x_init",
+            "system_matrix": "-ka, 0; ka, -ke",
+            "output": "ode_output_all_compartments",
+            "comment": "Systemmatrix ist quadratisch, dx/dt = A * x, ode_output hat Dimension von x0 und dx/dt"
+        },
+        {
+            "id": "slice_ode_output",
+            "type": "arithmetic",
+            "expression": "ode_output = ode_output_all_compartments[:, :, 1]",
+            "comment": "Choose 2nd compartment with index 1 (GI tract)."
+        }
+    ],
+    "outputs": [
+        "ode_output"
+    ],
+    "additional_outputs": [
+        "ka",
+        "ke"
+    ],
+    "loss": "mse",
+    "optimizer": "adam",
+    "metrics": []
+}

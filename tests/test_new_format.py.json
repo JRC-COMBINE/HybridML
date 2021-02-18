@@ -1,0 +1,122 @@
+{
+    "general": {
+        "name": "Peter",
+        "comment": "This is an especially beatiful network!",
+        "inputs": [
+            {
+                "id": "i1",
+                "size": 1
+            },
+            {
+                "id": "i2",
+                "size": 1
+            }
+        ],
+        "nodes": [
+            {
+                "id": "A",
+                "type": "nn",
+                "layers": [
+                    {
+                        "size": 16,
+                        "activation": "relu"
+                    },
+                    {
+                        "size": 8,
+                        "activation": "relu"
+                    },
+                    {
+                        "size": 1,
+                        "activation": "none"
+                    }
+                ],
+                "inputs": [
+                    "i1"
+                ],
+                "outputs": [
+                    "a1"
+                ]
+            },
+            {
+                "id": "B",
+                "type": "nn",
+                "layers": [
+                    {
+                        "size": 16,
+                        "activation": "relu"
+                    },
+                    {
+                        "size": 8,
+                        "activation": "relu"
+                    },
+                    {
+                        "size": 1,
+                        "activation": "none"
+                    }
+                ],
+                "inputs": [
+                    "i2"
+                ],
+                "outputs": [
+                    "b1"
+                ]
+            },
+            {
+                "id": "Exp",
+                "type": "arithmetic",
+                "expression": "out1 = a1 + b1"
+            }
+        ],
+        "outputs": [
+            "out1"
+        ],
+        "additional_outputs": [
+            "a1",
+            "b1"
+        ],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": [
+            "mse",
+            "mae"
+        ]
+    },
+    "single_number_layer": {
+        "name": "",
+        "comment": "",
+        "inputs": [
+            {
+                "id": "i1",
+                "size": 1
+            }
+        ],
+        "nodes": [
+            {
+                "id": "A",
+                "type": "nn",
+                "layers": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "inputs": [
+                    "i1"
+                ],
+                "outputs": [
+                    "a1"
+                ]
+            }
+        ],
+        "outputs": [
+            "a1"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": [
+            "mse",
+            "mae"
+        ]
+    }
+}

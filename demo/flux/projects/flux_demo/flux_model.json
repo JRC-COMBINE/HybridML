@@ -1,0 +1,104 @@
+{
+    "additional_outputs": [
+        "ka",
+        "ke",
+        "k12",
+        "k21"
+    ],
+    "comment": "Showing the new ode-node at the example of modeling the theoph data",
+    "inputs": [
+        {
+            "comment": "Covariates loaded using flux_datasource.py",
+            "id": "cov",
+            "size": 8
+        },
+        {
+            "comment": "Patient's inital Dose",
+            "id": "dose",
+            "size": 1
+        },
+        {
+            "comment": "Patient's time series. Atm, the size of every series has to be the same.",
+            "id": "t",
+            "size": null
+        }
+    ],
+    "loss": "mse",
+    "metrics": [],
+    "name": "flux_demo_3_compartments",
+    "nodes": [
+        {
+            "comment": "Form x_init, containing two dimensions for two compartments.",
+            "expression": "x_init = dose, 0, 0",
+            "id": "expand_x_init",
+            "type": "arithmetic"
+        },
+        {
+            "id": "BB_ka",
+            "inputs": [
+                "cov"
+            ],
+            "layers": [
+                {
+                    "activation": "tanh",
+                    "size": 15
+                },
+                {
+                    "activation": "tanh",
+                    "size": 9
+                },
+                {
+                    "activation": "None",
+                    "size": 4
+                }
+            ],
+            "outputs": [
+                "p_ka",
+                "p_ke",
+                "p_k12",
+                "p_k21"
+            ],
+            "type": "nn"
+        },
+        {
+            "expression": "ka = p_ka/10000 + 6.171449e-04",
+            "id": "p_ka_opt",
+            "type": "arithmetic"
+        },
+        {
+            "expression": "ke = p_ke/10 + 3.534819e-01",
+            "id": "p_ke_opt",
+            "type": "arithmetic"
+        },
+        {
+            "expression": "k12 = p_k12*10000 + 5.702387e+04",
+            "id": "p_k12_opt",
+            "type": "arithmetic"
+        },
+        {
+            "expression": "k21 = p_k21*1000 + 1.573615e+03",
+            "id": "p_k21_opt",
+            "type": "arithmetic"
+        },
+        {
+            "comment": "Systemmatrix ist quadratisch, dx/dt = A * x, ode_output hat Dimension von x0 und dx/dt",
+            "id": "ode_node",
+            "initial_value_input": "x_init",
+            "output": "ode_output_all_compartments",
+            "output_comment": "Dimensions of output: samples x time_points x compartments",
+            "system_matrix": "-ka, 0, 0; ka, -ke-k12, k21; 0, k12, -k21",
+            "time_series_input": "t",
+            "type": "linear_ode"
+        },
+        {
+            "id": "slice_ode_output",
+            "type": "arithmetic",
+            "expression": "ode_output = ode_output_all_compartments[:, :, 1]",
+            "comment": "Choose 2nd compartment with index 1 (GI tract)."
+        }
+    ],
+    "optimizer": "adam",
+    "outputs": [
+        "ode_output"
+    ]
+}

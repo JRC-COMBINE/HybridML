@@ -1,0 +1,206 @@
+{
+    "additional_outputs": [
+        "ka",
+        "ke",
+        "k12",
+        "k21"
+    ],
+    "comment": "Structured model that makes use of three black boxes to model the physiological behavior of patients",
+    "inputs": [
+        {
+            "id": "Organism|Weight [kg]",
+            "size": 1
+        },
+        {
+            "id": "Organism|Lumen|Stomach|Distal radius [dm]",
+            "size": 1
+        },
+        {
+            "id": "Organism|Liver|Volume [l]",
+            "size": 1
+        },
+        {
+            "id": "Organism|Fat|Fraction interstitial",
+            "size": 1
+        },
+        {
+            "id": "Gender",
+            "size": 1
+        },
+        {
+            "id": "Organism|Muscle|Specific blood flow rate [l/min/kg organ]",
+            "size": 1
+        },
+        {
+            "id": "Organism|Ontogeny factor (alpha1-acid glycoprotein)",
+            "size": 1
+        },
+        {
+            "id": "Organism|Lumen|Effective surface area variability factor",
+            "size": 1
+        },
+        {
+            "id": "Organism|Lumen|Stomach|GET_beta (Weibull function) variability factor",
+            "size": 1
+        },
+        {
+            "id": "Organism|Lumen|Stomach|GET_alpha (Weibull function) variability factor",
+            "size": 1
+        },
+        {
+            "id": "CYP1A2|Ontogeny factor",
+            "size": 1
+        },
+        {
+            "id": "CYP1A2|t1/2 (liver) [min]",
+            "size": 1
+        },
+        {
+            "comment": "Patient's inital Dose",
+            "id": "dose",
+            "size": 1
+        },
+        {
+            "comment": "Patient's time series. Atm, the size of every series has to be the same.",
+            "id": "t",
+            "size": null
+        }
+    ],
+    "loss": "mse",
+    "metrics": [],
+    "name": "flux_demo_3_compartments",
+    "nodes": [
+        {
+            "comment": "Form x_init, containing two dimensions for two compartments.",
+            "expression": "x_init = dose, 0, 0",
+            "id": "expand_x_init",
+            "type": "arithmetic"
+        },
+        {
+            "id": "BB_ka",
+            "inputs": [
+                "Organism|Weight [kg]",
+                "Organism|Fat|Fraction interstitial",
+                "Organism|Lumen|Stomach|GET_alpha (Weibull function) variability factor",
+                "CYP1A2|Ontogeny factor"
+            ],
+            "layers": [
+                {
+                    "activation": "tanh",
+                    "size": 5
+                },
+                {
+                    "activation": "tanh",
+                    "size": 2
+                },
+                {
+                    "activation": "None",
+                    "size": 1
+                }
+            ],
+            "outputs": [
+                "p_ka"
+            ],
+            "type": "nn"
+        },
+        {
+            "id": "BB_ke",
+            "inputs": [
+                "Organism|Weight [kg]",
+                "Organism|Liver|Volume [l]",
+                "Organism|Fat|Fraction interstitial",
+                "CYP1A2|Ontogeny factor",
+                "CYP1A2|t1/2 (liver) [min]"
+            ],
+            "layers": [
+                {
+                    "activation": "tanh",
+                    "size": 5
+                },
+                {
+                    "activation": "tanh",
+                    "size": 2
+                },
+                {
+                    "activation": "None",
+                    "size": 1
+                }
+            ],
+            "outputs": [
+                "p_ke"
+            ],
+            "type": "nn"
+        },
+        {
+            "id": "BB_k12_k21",
+            "inputs": [
+                "Organism|Weight [kg]",
+                "Organism|Lumen|Stomach|Distal radius [dm]",
+                "Organism|Fat|Fraction interstitial",
+                "Gender",
+                "Organism|Muscle|Specific blood flow rate [l/min/kg organ]",
+                "Organism|Ontogeny factor (alpha1-acid glycoprotein)",
+                "Organism|Lumen|Effective surface area variability factor",
+                "Organism|Lumen|Stomach|GET_beta (Weibull function) variability factor"
+            ],
+            "layers": [
+                {
+                    "activation": "tanh",
+                    "size": 5
+                },
+                {
+                    "activation": "tanh",
+                    "size": 2
+                },
+                {
+                    "activation": "None",
+                    "size": 2
+                }
+            ],
+            "outputs": [
+                "p_k12",
+                "p_k21"
+            ],
+            "type": "nn"
+        },
+        {
+            "expression": "ka = p_ka/10000 + 6.171449e-04",
+            "id": "p_ka_opt",
+            "type": "arithmetic"
+        },
+        {
+            "expression": "ke = p_ke/10 + 3.534819e-01",
+            "id": "p_k12_opt",
+            "type": "arithmetic"
+        },
+        {
+            "expression": "k12 = p_k12*10000 + 5.702387e+04",
+            "id": "p_k21_opt",
+            "type": "arithmetic"
+        },
+        {
+            "expression": "k21 = p_k21*1000 + 1.573615e+03",
+            "id": "ke",
+            "type": "arithmetic"
+        },
+        {
+            "comment": "Systemmatrix ist quadratisch, dx/dt = A * x, ode_output hat Dimension von x0 und dx/dt",
+            "id": "ode_node",
+            "initial_value_input": "x_init",
+            "output": "ode_output_all_compartments",
+            "system_matrix": "-ka, 0, 0; ka, -ke-k12, k21; 0, k12, -k21",
+            "time_series_input": "t",
+            "type": "linear_ode"
+        },
+        {
+            "id": "slice_ode_output",
+            "type": "arithmetic",
+            "expression": "ode_output = ode_output_all_compartments[:, :, 1]",
+            "comment": "Choose 2nd compartment with index 1 (GI tract)."
+        }
+    ],
+    "optimizer": "adam",
+    "outputs": [
+        "ode_output"
+    ]
+}

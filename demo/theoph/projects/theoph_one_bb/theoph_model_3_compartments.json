@@ -1,0 +1,70 @@
+{
+    "name": "theoph_demo_3_compartments",
+    "comment": "Showing the new ode-node at the example of modeling the theoph data",
+    "inputs": [
+        {
+            "id": "wt",
+            "size": 1,
+            "comment": "Patient's weight"
+        },
+        {
+            "id": "dose",
+            "size": 1,
+            "comment": "Patient's inital Dose"
+        },
+        {
+            "id": "t",
+            "size": null,
+            "comment": "Patient's time series. Atm, the size of every series has to be the same."
+        }
+    ],
+    "nodes": [
+        {
+            "id": "expand_x_init",
+            "type": "arithmetic",
+            "expression": "x_init = dose, 0, 0",
+            "comment": "Form x_init, containing two dimensions for two compartments."
+        },
+        {
+            "id": "A",
+            "type": "arithmetic",
+            "expression": "ka = 0 * wt + 2.14"
+        },
+        {
+            "id": "B",
+            "type": "arithmetic",
+            "expression": "k12 = 0 * wt - 0.08"
+        },
+        {
+            "id": "C",
+            "type": "arithmetic",
+            "expression": "k21 = 0 * wt + 1.16"
+        },
+        {
+            "id": "D",
+            "type": "arithmetic",
+            "expression": "k10 = 0 * wt + 0.06"
+        },
+        {
+            "id": "ode_node",
+            "type": "ode",
+            "time_series_input": "t",
+            "initial_value_input": "x_init",
+            "system_matrix": "-ka, 0, 0; ka, -k10-k12, k21; 0, k12, -k21",
+            "output": "ode_output",
+            "comment": "Systemmatrix ist quadratisch, dx/dt = A * x, ode_output hat Dimension von x0 und dx/dt"
+        }
+    ],
+    "outputs": [
+        "ode_output"
+    ],
+    "additional_outputs": [
+        "ka",
+        "k12",
+        "k21",
+        "k10"
+    ],
+    "loss": "mse",
+    "optimizer": "adam",
+    "metrics": []
+}

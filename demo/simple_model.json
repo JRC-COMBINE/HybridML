@@ -1,0 +1,72 @@
+{
+    "name": "simple_model",
+    "inputs": [
+        {
+            "comment": "Covariates loaded using flux_datasource.py",
+            "id": "a",
+            "size": 1
+        },
+        {
+            "comment": "Patient's inital Dose",
+            "id": "b",
+            "size": 1
+        }
+    ],
+    "loss": "mse",
+    "metrics": [],
+    "optimizer": "adam",
+    "outputs": [
+        "out"
+    ],
+    "additional_outputs": [
+        "a_out",
+        "b_out"
+    ],
+    "nodes": [
+        {
+            "id": "BB_a",
+            "inputs": [
+                "a"
+            ],
+            "layers": [
+                {
+                    "activation": "tanh",
+                    "size": 5
+                },
+                {
+                    "activation": "None",
+                    "size": 1
+                }
+            ],
+            "outputs": [
+                "a_out"
+            ],
+            "type": "nn"
+        },
+        {
+            "id": "BB_b",
+            "inputs": [
+                "b"
+            ],
+            "layers": [
+                {
+                    "activation": "tanh",
+                    "size": 5
+                },
+                {
+                    "activation": "None",
+                    "size": 1
+                }
+            ],
+            "outputs": [
+                "b_out"
+            ],
+            "type": "nn"
+        },
+        {
+            "id": "combine",
+            "type": "arithmetic",
+            "expression": "out = a_out*b_out"
+        }
+    ]
+}

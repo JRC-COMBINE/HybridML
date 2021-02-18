@@ -1,0 +1,21 @@
+{
+    "name": "",
+    "models": [
+        "theoph_model_3_compartments_one_bb.json"
+    ],
+    "model_save_dir": "./models",
+    "data_files": [
+        {
+            "name": "theoph",
+            "path": "./theoph_normalized.csv",
+            "type": "time_expanded",
+            "identifier": "Subject",
+            "properties": [
+                "Wt",
+                "Dose"
+            ],
+            "time": "Time",
+            "target": "conc"
+        }
+    ]
+}

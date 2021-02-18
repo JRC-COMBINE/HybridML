@@ -1,0 +1,140 @@
+{
+    "test_layers": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "input",
+                "size": 2
+            }
+        ],
+        "nodes": [
+            {
+                "id": "ID",
+                "type": "nn",
+                "layers": [
+                    {
+                        "size": 4,
+                        "activation": "elu"
+                    },
+                    {
+                        "size": 3,
+                        "activation": "relu"
+                    },
+                    {
+                        "size": 2,
+                        "activation": "tanh"
+                    },
+                    {
+                        "size": 1,
+                        "activation": "sigmoid",
+                        "kernel_regularizer": "L1(0.1)",
+                        "activity_regularizer": "L2(0.2)"
+                    }
+                ],
+                "inputs": [
+                    "input"
+                ],
+                "outputs": [
+                    "output"
+                ]
+            }
+        ],
+        "outputs": [
+            "output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "multiple_inputs": {
+        "name": "test_training",
+        "inputs": [
+            {
+                "id": "i1",
+                "size": 1
+            },
+            {
+                "id": "i2",
+                "size": 2
+            },
+            {
+                "id": "i3",
+                "size": 3
+            },
+            {
+                "id": "i4",
+                "size": 4
+            }
+        ],
+        "nodes": [
+            {
+                "id": "ID",
+                "type": "nn",
+                "layers": [
+                    {
+                        "size": 1,
+                        "activation": "None"
+                    }
+                ],
+                "inputs": [
+                    "i1",
+                    "i2",
+                    "i3",
+                    "i4"
+                ],
+                "outputs": [
+                    "output"
+                ]
+            }
+        ],
+        "outputs": [
+            "output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "multiple_outputs": {
+        "name": "test_training",
+        "inputs": [
+            {
+                "id": "i1",
+                "size": 1
+            }
+        ],
+        "nodes": [
+            {
+                "id": "ID",
+                "type": "nn",
+                "layers": [
+                    {
+                        "size": 4,
+                        "activation": "None"
+                    }
+                ],
+                "inputs": [
+                    "i1"
+                ],
+                "outputs": [
+                    "o1",
+                    "o2",
+                    "o3",
+                    "o4"
+                ]
+            }
+        ],
+        "outputs": [
+            "o1",
+            "o2",
+            "o3",
+            "o4"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    }
+}

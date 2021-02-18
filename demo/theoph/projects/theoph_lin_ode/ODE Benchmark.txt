@@ -1,0 +1,13 @@
+ODE Benchmark
+
+Theophline
+epochs:15
+samples:2
+
+
+Macbook Proo: Mid 2014
+Processor: i5-4308U CPU @ 2.80GHz
+The model using the closed form solution took 10.75s to train
+The model using the casadi solution took 27.91s to train
+The model using the casadi alternative integration solution took 28.46s to train
+The model using the tensorflow solution took 982.70s (16.36min) to train

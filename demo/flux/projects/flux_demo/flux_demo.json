@@ -1,0 +1,8 @@
+{
+    "name": "Flux Demo",
+    "models": [
+        "flux_model.json"
+    ],
+    "model_save_dir": "./models",
+    "data_files": []
+}

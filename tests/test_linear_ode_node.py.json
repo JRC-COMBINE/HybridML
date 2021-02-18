@@ -1,0 +1,231 @@
+{
+    "simple_node": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "x_init",
+                "size": 2
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "#node_type#",
+                "solver": "default",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "system_matrix": "0.5, 0; -0.5, 1",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "replace_matrix": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "x_init",
+                "size": 2
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "#node_type#",
+                "solver": "default",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "system_matrix": "#system_matrix#",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "node_only": {
+        "id": "linear_ode",
+        "type": "#node_type#",
+        "solver": "default",
+        "time_series_input": "t",
+        "initial_value_input": "x_init",
+        "system_matrix": "#system_matrix#",
+        "output": "ode_output"
+    },
+    "with_parameters": {
+        "name": "",
+        "inputs": [
+            {
+                "id": "p0",
+                "size": 1
+            },
+            {
+                "id": "p1",
+                "size": 1
+            },
+            {
+                "id": "p2",
+                "size": 1
+            },
+            {
+                "id": "p3",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 2
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "#node_type#",
+                "solver": "default",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "system_matrix": "#system_matrix#",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "with_trainable_weights": {
+        "name": "",
+        "inputs": [
+            {
+                "id": "p0",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 2
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "Blackbox",
+                "type": "nn",
+                "inputs": [
+                    "p0"
+                ],
+                "layers": [
+                    {
+                        "activation": "relu",
+                        "size": "8"
+                    },
+                    {
+                        "activation": "relu",
+                        "size": 6
+                    },
+                    {
+                        "activation": "softplus",
+                        "size": 4
+                    }
+                ],
+                "outputs": [
+                    "a",
+                    "b",
+                    "c",
+                    "d"
+                ]
+            },
+            {
+                "id": "linear_ode",
+                "type": "#node_type#",
+                "solver": "default",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "system_matrix": "[[a,b],[c,d]]",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [
+            "a",
+            "b",
+            "c",
+            "d"
+        ],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "by_hand": {
+        "name": "",
+        "inputs": [
+            {
+                "id": "p0",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 2
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "",
+                "type": "arithmetic",
+                "expression": "system_matrix = p0,2*p0,3*p0,4*p0"
+            },
+            {
+                "id": "linear_ode",
+                "type": "#node_type#",
+                "solver": "default",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "system_matrix": "system_matrix",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [
+            "system_matrix"
+        ],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    }
+}

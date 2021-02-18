@@ -1,0 +1,14 @@
+{
+    "name": "Flux Demo",
+    "models": [
+        "structured_flux_model.json"
+    ],
+    "model_save_dir": "./models",
+    "data_files": [
+        {
+            "name": "flux",
+            "type": "special_snowflake",
+            "path": "..."
+        }
+    ]
+}

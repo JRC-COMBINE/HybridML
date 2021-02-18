@@ -1,0 +1,74 @@
+{
+    "name": "Hybrid",
+    "comment": "...",
+    "inputs": [
+        {
+            "id": "i1",
+            "size": 2
+        },
+        {
+            "id": "i2",
+            "size": 2
+        }
+    ],
+    "nodes": [
+        {
+            "id": "A",
+            "type": "nn",
+            "layers": [
+                {
+                    "size": 7,
+                    "activation": "relu"
+                },
+                {
+                    "size": 1,
+                    "activation": "none"
+                }
+            ],
+            "inputs": [
+                "i1"
+            ],
+            "outputs": [
+                "a"
+            ]
+        },
+        {
+            "id": "B",
+            "type": "nn",
+            "layers": [
+                {
+                    "size": 7,
+                    "activation": "relu"
+                },
+                {
+                    "size": 1,
+                    "activation": "none"
+                }
+            ],
+            "inputs": [
+                "i2"
+            ],
+            "outputs": [
+                "b"
+            ]
+        },
+        {
+            "id": "Expression",
+            "type": "arithmetic",
+            "expression": "out1 = a + b"
+        }
+    ],
+    "outputs": [
+        "out1"
+    ],
+    "additional_outputs": [
+        "a",
+        "b"
+    ],
+    "loss": "mse",
+    "optimizer": "adam",
+    "metrics": [
+        "mse",
+        "mae"
+    ]
+}

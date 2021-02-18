@@ -1,0 +1,260 @@
+{
+    "type": "object",
+    "properties": {
+        "default": {
+            "type": "object",
+            "properties": {
+                "activation": {
+                    "type": "string"
+                },
+                "layer": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "activation",
+                "layer"
+            ]
+        },
+        "nets": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "inputs": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "size"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "size"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "size"
+                                    ]
+                                }
+                            ]
+                        },
+                        "nodes": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "inputs": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        },
+                                        "outputs": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        },
+                                        "layers": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "integer"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "type",
+                                        "inputs",
+                                        "outputs",
+                                        "layers"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "inputs": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        },
+                                        "outputs": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "type",
+                                        "inputs",
+                                        "outputs"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "inputs": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        },
+                                        "outputs": {
+                                            "type": "array",
+                                            "items": [
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "type",
+                                        "inputs",
+                                        "outputs"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "inputs",
+                        "nodes"
+                    ]
+                }
+            ]
+        },
+        "models": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "network": {
+                            "type": "string"
+                        },
+                        "outputs": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "optimizer": {
+                            "type": "string"
+                        },
+                        "metrics": {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "loss": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "network",
+                        "outputs",
+                        "optimizer",
+                        "metrics",
+                        "loss"
+                    ]
+                }
+            ]
+        }
+    },
+    "required": [
+        "nets",
+        "models"
+    ]
+}

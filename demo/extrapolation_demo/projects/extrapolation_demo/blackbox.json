@@ -1,0 +1,55 @@
+{
+    "name": "BlackBox",
+    "comment": "jagt im komplett verwahrlosten Taxi quer durch Bayern!",
+    "inputs": [
+        {
+            "id": "i1",
+            "size": 2
+        },
+        {
+            "id": "i2",
+            "size": 2
+        }
+    ],
+    "nodes": [
+        {
+            "id": "A",
+            "type": "nn",
+            "layers": [
+                {
+                    "size": 7,
+                    "activation": "relu"
+                },
+                {
+                    "size": 8,
+                    "activation": "relu"
+                },
+                {
+                    "size": 8,
+                    "activation": "relu"
+                },
+                {
+                    "size": 1,
+                    "activation": "none"
+                }
+            ],
+            "inputs": [
+                "i1",
+                "i2"
+            ],
+            "outputs": [
+                "a"
+            ]
+        }
+    ],
+    "outputs": [
+        "a"
+    ],
+    "additional_outputs": [],
+    "loss": "mse",
+    "optimizer": "adam",
+    "metrics": [
+        "mse",
+        "mae"
+    ]
+}

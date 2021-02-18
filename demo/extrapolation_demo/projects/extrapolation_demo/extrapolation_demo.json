@@ -1,0 +1,38 @@
+{
+    "name": "extrapolation_demo",
+    "models": [
+        "blackbox.json",
+        "hybrid.json"
+    ],
+    "abc": "blackbox.json",
+    "model_save_dir": "./models",
+    "data_files": [
+        {
+            "name": "train",
+            "path": "./train.csv",
+            "x": [
+                2,
+                2
+            ],
+            "y": 1
+        },
+        {
+            "name": "test",
+            "path": "./test.csv",
+            "x": [
+                2,
+                2
+            ],
+            "y": 1
+        },
+        {
+            "name": "val",
+            "path": "./val.csv",
+            "x": [
+                2,
+                2
+            ],
+            "y": 1
+        }
+    ]
+}

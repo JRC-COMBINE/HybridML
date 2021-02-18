@@ -1,0 +1,39 @@
+{
+    "test_additional_outputs_generation": {
+        "name": "test_additional_outputs_generation",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "i1",
+                "size": 1
+            },
+            {
+                "id": "i2",
+                "size": 1
+            },
+            {
+                "id": "i3",
+                "size": 1
+            },
+            {
+                "id": "i4",
+                "size": 1
+            }
+        ],
+        "nodes": [],
+        "outputs": [
+            "i1",
+            "i4"
+        ],
+        "additional_outputs": [
+            "i2",
+            "i3"
+        ],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": [
+            "mse",
+            "mae"
+        ]
+    }
+}

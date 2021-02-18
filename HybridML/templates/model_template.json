@@ -1,0 +1,46 @@
+{
+    "name": "",
+    "comment": "",
+    "inputs": [
+        {
+            "id": "i1",
+            "size": 1
+        }
+    ],
+    "nodes": [
+        {
+            "id": "A",
+            "type": "nn",
+            "layers": [
+                {
+                    "size": 16,
+                    "activation": "relu"
+                },
+                {
+                    "size": 8,
+                    "activation": "relu"
+                },
+                {
+                    "size": 1,
+                    "activation": "none"
+                }
+            ],
+            "inputs": [
+                "i1"
+            ],
+            "outputs": [
+                "a1"
+            ]
+        }
+    ],
+    "outputs": [
+        "a1"
+    ],
+    "additional_outputs": [],
+    "loss": "mse",
+    "optimizer": "adam",
+    "metrics": [
+        "mse",
+        "mae"
+    ]
+}
