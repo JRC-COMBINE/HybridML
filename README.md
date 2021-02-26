@@ -1,8 +1,8 @@
-# Hybid Model Creator - create hybrid tensorflow models from json
+# HybridML - Open Source Platform for Hybrid Modeling
 
 Creates hybrid tensorflow models from a json description.
 
-- [Hybid Model Creator - create hybrid tensorflow models from json](#hybid-model-creator---create-hybrid-tensorflow-models-from-json)
+- [HybridML - Open Source Platform for Hybrid Modeling](#HybridML---Open-Source-Platform-for-Hybrid-Modeling)
   - [Introduction](#introduction)
   - [Technologies](#technologies)
   - [Demos](#demos)
