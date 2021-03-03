@@ -17,10 +17,6 @@
             "type": "nn",
             "layers": [
                 {
-                    "size": 7,
-                    "activation": "relu"
-                },
-                {
                     "size": 1,
                     "activation": "none"
                 }
@@ -37,10 +33,6 @@
             "type": "nn",
             "layers": [
                 {
-                    "size": 7,
-                    "activation": "relu"
-                },
-                {
                     "size": 1,
                     "activation": "none"
                 }
@@ -55,7 +47,7 @@
         {
             "id": "Expression",
             "type": "arithmetic",
-            "expression": "out1 = a + b"
+            "expression": "out1 = a * b"
         }
     ],
     "outputs": [
@@ -68,7 +60,6 @@
     "loss": "mse",
     "optimizer": "adam",
     "metrics": [
-        "mse",
-        "mae"
+        "mse"
     ]
 }
