@@ -15,7 +15,7 @@
       - [2. Building](#2-building)
     - [NodeBuilder, NodeParser and Node](#nodebuilder-nodeparser-and-node)
   - [Fluvoxamine](#fluvoxamine)
-  - [How to define a model-json](#how-to-define-a-model-json)
+  - [Constructing Models](#constructing-models)
   - [How to implement new node types](#how-to-implement-new-node-types)
 ## Introduction
 This tool aims to create hybrid machine learning models using tensorflow and keras.
@@ -86,7 +86,7 @@ The model resembles a two compartiment model for drug concentration in the blood
 It makes use of the Theophylline dataset, that comes with the R language.
 
 ### Fluvoxamin Demo
-[flux_demo.py](demo/flux/flux_demo.py), 
+[flux_demo.py](demo/flux/flux_demo.py),
 [structured_flux_demo.py](demo/flux/structured_flux_demo.py)
 Similar type of model to the theophylline demo.
 Contains a more refined model for a use case that is closer to the industry.
@@ -162,7 +162,7 @@ The outputs of the blackbox are transposed and scaled to initial guesses.
 The fluvoxamine use case can be found in [flux_demo.py](demo/flux/flux_demo.py).
 
 
-## How to define a model-json
+## Constructing Models
 See [model-json.md](model-json.md).
 
 ## How to implement new node types
