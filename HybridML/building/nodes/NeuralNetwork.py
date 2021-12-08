@@ -1,8 +1,9 @@
-from tensorflow.keras.layers import Dense, Concatenate
 import tensorflow as tf
+from HybridML.parsing.nodes.NeuralNetwork import Layer, NNNode
+from tensorflow.keras.layers import Concatenate, Dense
+
 from ..BaseBuilders import NodeBuilder
 from ..DataModel import BuiltNodeContainer
-from HybridML.parsing.nodes.NeuralNetwork import Layer, NNNode
 
 
 class NNNodeBuilder(NodeBuilder):
@@ -12,7 +13,10 @@ class NNNodeBuilder(NodeBuilder):
     def create_single_layer(self, layer):
         assert isinstance(layer, Layer)
         assert layer.type == "dense"
-        activation = None if layer.activation.lower() == "none" else layer.activation
+        if layer.activation is None or layer.activation.lower() == "none":
+            activation = None
+        else:
+            activation = layer.activation
 
         activity_regularizer = self.parse_regularizer(layer.activity_regularizer)
         kernel_regularizer = self.parse_regularizer(layer.kernel_regularizer)

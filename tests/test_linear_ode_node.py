@@ -1,25 +1,14 @@
 import unittest
-import os
+
 import numpy as np
-import json
 import tensorflow as tf
-from tensorflow.keras.layers import Input
 import tqdm
-import sys
-
-sys.path.append(os.path.dirname(__file__))
-sys.path.append(os.path.split(os.path.dirname(__file__))[0])
-import test_utility  # noqa: E402
-
-
-from HybridML.ModelCreator import KerasModelCreator  # noqa: E402
-from HybridML.NodeRegistry import DefaultNodeRegistry  # noqa: E402
-
-from HybridML.parsing.nodes.LinearOde import LinearOdeNodeParser  # noqa: E402
 from HybridML.building.nodes.LinearOde import LinearOdeNodeBuilder  # noqa: E402
+from HybridML.parsing.nodes.LinearOde import LinearOdeNodeParser  # noqa: E402
+from tensorflow.keras.layers import Input
 
+import test_utility
 
-# tf.keras.backend.set_floatx("float64")
 node_type = "#node_type#"
 linear_node = "linear_ode"
 sys_mat = "#system_matrix#"
@@ -143,37 +132,15 @@ class LinearODEProblemGenerator:
 
 # Wrap TesterBase into an empty class, s.t. it is not seen as a TestCase itself
 class Wrapper:
-    class LinearOdeNodeTesterBase(test_utility.TestCaseTimer):
+    class LinearOdeNodeTesterBase(test_utility.TestCase):
         def __init__(self, current_file, methodName="runTest", iterations_per_problem=2, close_threshold=1e-4):
             super().__init__(methodName)
             self.close_threshold = close_threshold
             self.generator = LinearODEProblemGenerator(seed=42)
             self.iterations_per_problem = iterations_per_problem
-            self.data = test_utility.load_relative_json(current_file)
-            self.creator = KerasModelCreator(DefaultNodeRegistry())
             self.node_parser = LinearOdeNodeParser()
             self.node_builder = LinearOdeNodeBuilder()
-
-        def repeat(self, desc=None, n=None):
-            n = self.iterations_per_problem if n is None else n
-            return tqdm.tqdm(range(n), desc)
-
-        def load_model_by_id(self, json_id):
-            data = self.data[json_id]
-            model = self.creator.generate_models([data])[0]
-            return model
-
-        def load_model_replace_dict(self, model_id, replace_dict):
-            s = json.dumps(self.data[model_id])
-            for to_replace, replace_with in replace_dict.items():
-                s = s.replace(to_replace, replace_with)
-            data = json.loads(s)
-
-            result = self.creator.generate_models([data])[0]
-            return result
-
-        def load_model_replace(self, model_id, to_replace, replace_with):
-            return self.load_model_replace_dict(model_id, {to_replace: replace_with})
+            self.creator = test_utility.ModelFromTestJsonCreator(current_file)
 
         def build_layer(self, A, dim, n_t, p_num=0):
             data = self.data["node_only"].copy()
@@ -189,40 +156,44 @@ class Wrapper:
             built_node = self.node_builder.build(parsed_node, inputs)
             return built_node
 
+        def repeat(self, desc=None, n=None):
+            n = self.iterations_per_problem if n is None else n
+            return tqdm.tqdm(range(n), desc)
+
         def test_basic_creation(self):
-            self.load_model_replace_dict("simple_node", {node_type: self.ode_node_type})
+            self.creator.load_model_replace_dict("simple_node", {node_type: self.ode_node_type})
 
         def test_const_A_prediction(self):
             for i in self.repeat("test_const_A_prediction"):
                 prob = self.generator.linear_problem()
-                model = self.load_model_replace_dict(
+                model = self.creator.load_model_replace_dict(
                     "replace_matrix", {sys_mat: prob.A_str, node_type: self.ode_node_type}
                 )
                 prediction = model.predict([prob.x_init, prob.t])
-                test_utility.assertClose(self, prob.x_sol, prediction, self.close_threshold)
+                self.assertClose(prob.x_sol, prediction, self.close_threshold)
 
         def test_batches(self):
             for i in self.repeat("test_batches"):
                 prob = self.generator.linear_problem()
-                model = self.load_model_replace_dict(
+                model = self.creator.load_model_replace_dict(
                     "replace_matrix", {sys_mat: prob.A_str, node_type: self.ode_node_type}
                 )
                 prediction = model.predict([prob.x_init, prob.t])
-                test_utility.assertClose(self, prob.x_sol, prediction, self.close_threshold)
+                self.assertClose(prob.x_sol, prediction, self.close_threshold)
 
         def test_with_parameters(self):
             for _ in self.repeat("test_with_parameters"):
                 prob = self.generator.linear_problem_with_parameters()
-                model = self.load_model_replace_dict(
+                model = self.creator.load_model_replace_dict(
                     "with_parameters", {sys_mat: prob.A_str, node_type: self.ode_node_type}
                 )
                 prediction = model.predict([*prob.param_values.T, prob.x_init, prob.t])
-                test_utility.assertClose(self, prob.x_sol, prediction, self.close_threshold)
+                self.assertClose(prob.x_sol, prediction, self.close_threshold)
 
         def test_training(self, epochs=2):
             for _ in self.repeat("test_training"):
                 # Generate Model and Problem
-                model = self.load_model_replace_dict("with_trainable_weights", {node_type: self.ode_node_type})
+                model = self.creator.load_model_replace_dict("with_trainable_weights", {node_type: self.ode_node_type})
                 prob = self.generator.linear_samples_for_training(dim=2, n=11)
 
                 y_sol = prob.x_sol

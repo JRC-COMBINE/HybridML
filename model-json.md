@@ -4,46 +4,18 @@ This description is read by HybridML to generate models and to load previously s
 
 ## Meta Parameters
 * `name` can be choosen freely
-* `loss, metrics, optimizer` can be chosen from the corresponding tensorflow/keras objects.
+* `loss, metrics, optimizer` can be choen from the corresponding tensorflow/keras objects.
 * Furthermore comments can be added at will.
 ```json
 {
     "name": "my model",
     "loss": "mse",
-    "metrics": ["accuracy"],
+    "metrics": ['accuracy'],
     "optimizer": "adam",
     "comment": "A comment",
     ...
 }
 ```
-
-## Custom Losses
-All loss functions defined in keras (https://keras.io/api/losses/) are supported. In addition, it is possible to use a completely custom loss function, which has to be a callable taking two arguments: `y_true` for the ground truth and `y_pred` for the prediction.
-
-### Imports for Custom Loss Functions
-
-Inside a custom loss function, fast tensor operations supported by tensorflow or keras should be used.
-```python
-import tensorflow as tf
-from keras import backend as K
-```
-
-### Example Loss Function
-(from https://keras.io/api/losses/)
-```python
-def my_loss_fn(y_true, y_pred):
-    squared_difference = tf.square(y_true - y_pred)
-    return tf.reduce_mean(squared_difference, axis=-1)  # Note the `axis=-1`
-```
-
-Following this example, the custom loss function can be used with the HybridML model by supplying a reference to the function in `model.compile` after loading the model from the JSON description:
-
-```python
-model.compile(optimizer="adam",loss=my_loss_fn)
-```
-
-The loss function originally specified in the model's JSON description is ignored in this case.
-
 ## Inputs
 * `id` assigns the input a unique id. The id is used to reference the input in the model.
 * `size` determines how many parameters go into the input. Can be `null`, if the length is variable.
@@ -132,7 +104,7 @@ The nodes are connected with node connectors.
     * `**` powers
     * `(a+b)*c` parenthesis
     * `input[0]`, `all_compartments[:,:,1]` slicing. Here the `:` means keeping the whole dimension and slice only the ones with an actual index.
-    * **experimental:** `[[a,b],[c,d]]` building multidimensional outputs
+    * **experimental:** `[[a,b],[c,d]]` building multidimensional outputs 
     * Generally most things possible in python. **This gives great opportunity to break the model.**
 ```json
 {

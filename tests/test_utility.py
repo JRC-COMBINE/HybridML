@@ -1,29 +1,38 @@
+import json
 import os
 import shutil
-import json
-import numpy as np
+import sys
 import unittest
-import time
 
-profiling_list = []
+import numpy as np
 
+sys.path.append(os.path.split(os.path.dirname(__file__))[0])
 
-class TestCaseTimer(unittest.TestCase):
-    def setUp(self):
-        self.startTime = time.time()
-
-    def tearDown(self):
-        t = time.time() - self.startTime
-        profiling_list.append((self.id(), t))
+from HybridML.ModelCreator import KerasModelCreator  # noqa: E402
+from HybridML.NodeRegistry import DefaultNodeRegistry  # noqa: E402
 
 
-def assertClose(testcase, expected, actual, threshold=1e-4):
-    abs_err = expected - actual
-    rel_err = np.nan_to_num(abs_err / expected)
-    max_err = np.max(rel_err)
-    testcase.assertTrue(
-        max_err < threshold, f"The maximum difference of {max_err} exceeded the threshold of {threshold}."
-    )
+class ModelFromTestJsonCreator:
+    def __init__(self, file):
+        self.data = load_relative_json(file)
+        self.creator = KerasModelCreator(DefaultNodeRegistry())
+
+    def load_model_by_id(self, json_id):
+        data = self.data[json_id]
+        model = self.creator.generate_models([data])[0]
+        return model
+
+    def load_model_replace_dict(self, model_id, replace_dict):
+        s = json.dumps(self.data[model_id])
+        for to_replace, replace_with in replace_dict.items():
+            s = s.replace(to_replace, replace_with)
+        data = json.loads(s)
+
+        result = self.creator.generate_models([data])[0]
+        return result
+
+    def load_model_replace(self, model_id, to_replace, replace_with):
+        return self.load_model_replace_dict(model_id, {to_replace: replace_with})
 
 
 def load_json(path):
@@ -61,3 +70,13 @@ def contains_all_words(text, words):
 
 def contains_any_word(text, words):
     return any(word in text for word in words)
+
+
+class TestCase(unittest.TestCase):
+    def assertClose(self, expected, actual, threshold=1e-4):
+        abs_err = np.abs(expected - actual)
+        rel_err = np.abs(np.nan_to_num(abs_err / expected))
+        max_err = np.max(rel_err)
+        self.assertTrue(
+            max_err < threshold, f"The maximum difference of {max_err} exceeded the threshold of {threshold}."
+        )

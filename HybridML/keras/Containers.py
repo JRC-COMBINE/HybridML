@@ -1,4 +1,5 @@
 import os
+
 from HybridML.building.DataModel import ModelContainer
 
 
@@ -43,6 +44,7 @@ class KerasModelContainer(ModelContainer):
             validation_data=validation_data,
             validation_split=validation_split,
             shuffle=shuffle,
+            **kwargs
         )
         return KerasHistoryContainer(history)
 

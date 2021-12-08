@@ -1,17 +1,18 @@
 import os
-import unittest
-import tensorflow as tf
 import sys
+import unittest
 
-sys.path.append(os.path.dirname(__file__))
+import tensorflow as tf
+
 sys.path.append(os.path.split(os.path.dirname(__file__))[0])
 
-import test_utility  # noqa: E402
 from HybridML.ModelCreator import KerasModelCreator  # noqa: E402
 from HybridML.NodeRegistry import DefaultNodeRegistry  # noqa: E402
 
+import test_utility  # noqa: E402
 
-class test_neural_net_node(test_utility.TestCaseTimer):
+
+class test_neural_net_node(test_utility.TestCase):
     def __init__(self, methodName="runTest"):
         super().__init__(methodName)
         self.data = test_utility.load_relative_json(__file__)

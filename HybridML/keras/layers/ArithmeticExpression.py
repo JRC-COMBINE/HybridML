@@ -1,3 +1,4 @@
+import math
 import re
 
 import numpy as np
@@ -5,9 +6,16 @@ import tensorflow as tf
 from tensorflow.keras.layers import Layer
 
 # Regex Patterns
-variable_pattern = re.compile(r"([a-zA-Z]+\w*)")
+variable_pattern_string = r"([a-zA-Z]+\w*)"
+variable_is_no_function_appendix = r"[ ]*($|[^ \w\(])"
+variable_pattern = re.compile(variable_pattern_string + variable_is_no_function_appendix)
+variable_or_function_pattern = re.compile(variable_pattern_string)
+slice_pattern = re.compile(r"\[[\w]?\d+[\w]?\]")
 scientific_number_escape_pattern = re.compile(r"\d+\.?\d*e[-+]?\d+")
 number_pattern = re.compile(r"-?[\d.]+(?:e-?\d+)?")
+
+# Variables and functions to be used in the arithmetic expression
+evaluation_environment = {"exp": tf.math.exp, "pi": math.pi, "sin": tf.sin}
 
 
 class DummyTensor:
@@ -18,6 +26,9 @@ class DummyTensor:
         return self
 
     def combine_one(self):
+        return self
+
+    def combine_n(self, *args, **kwargs):
         return self
 
     __add__ = combine_two
@@ -54,6 +65,8 @@ class DummyTensor:
 
     __getitem__ = combine_two
 
+    __call__ = combine_n
+
 
 def find_vars_in_expression(expression, sort=True):
     """Finds all python variables, used in the expression and returns them while keeping the original order."""
@@ -62,8 +75,10 @@ def find_vars_in_expression(expression, sort=True):
     escaped_expression = re.sub(scientific_number_escape_pattern, "0", expression)
 
     variables = variable_pattern.findall(escaped_expression)
+
+    vars2 = [var[0] for var in variables]
     # Magically removes duplicates while preserving the order. Its Stack Overflow Magic from Raymond Hettinger
-    result = list(dict.fromkeys(variables))
+    result = list(dict.fromkeys(vars2))
     if sort:
         result.sort()
     return result
@@ -96,6 +111,20 @@ def build_system_matrix(expression, parameters, name=None):
     else:
         layer = ArithmeticExpressionLayer(expression)
         return layer(parameters)
+
+
+def calculate_shape_of_expression(expression):
+    """Calculates the expression shape by replacing variables and values
+    with a dummy object, calculating the expression using eval and taking the shape of it."""
+    expression2 = re.sub(number_pattern, "-dummy", expression)
+    expression3 = re.sub(slice_pattern, "", expression2)
+    expression4 = re.sub(variable_or_function_pattern, "dummy", expression3)
+    # Use -dummy to counteract the '-' operator before a number being parsed as a part of the number
+    # (x - 4 --> x dummy) --> (x-4 --> x-dummy)
+
+    shadow = eval(expression4, {"dummy": DummyTensor()})
+    shadow = np.array(shadow)
+    return shadow.shape
 
 
 class ArithmeticExpressionLayer(Layer):
@@ -143,7 +172,7 @@ class ArithmeticExpressionLayer(Layer):
             variable_dict = dict(zip(self.input_var_names, inputs))
 
             # Execute python code from expression
-            output = eval(self.expression, variable_dict)
+            output = eval(self.expression, variable_dict, evaluation_environment)
 
             # Shape all constants to the shape of the input
             zero_tensor = inputs[0] * 0
@@ -172,17 +201,9 @@ class ArithmeticExpressionLayer(Layer):
         self.expression = expression
 
     def _calculate_depth(self):
-        """Calculates the expression depth by replacing variables and values
-        with a dummy object and taking the shape of it."""
-
-        expression = self.expression
-
-        expression = re.sub(number_pattern, "dummy", expression)
-        expression = re.sub(variable_pattern, "dummy", expression)
-
-        shadow = eval(expression, {"dummy": DummyTensor()})
-        shadow = np.array(shadow)
-        self.depth = len(shadow.shape)
+        """Calculates the expression depth."""
+        shape = calculate_shape_of_expression(self.expression)
+        self.depth = len(shape)
 
     def _set_adapt_depth_fn(self):
         """Depending, on the depth of the expression, precalculates a function that adapts the dimensionality of the arithmetic expression."""
