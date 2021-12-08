@@ -6,16 +6,14 @@ from collections import namedtuple
 import numpy as np
 import tensorflow as tf
 
-sys.path.append(os.path.dirname(__file__))
+import test_utility
+
+sys.path.append(os.path.split(os.path.dirname(__file__))[0])
 sys.path.append(os.path.split(os.path.dirname(__file__))[0])
 
 from HybridML.keras.layers.ArithmeticExpression import (  # noqa: E402
-    ArithmeticExpressionLayer,
-    find_variables_in_assignment,
-    find_vars_in_expression,
-)
-
-from test_utility import TestCaseTimer  # noqa: E402
+    ArithmeticExpressionLayer, find_variables_in_assignment,
+    find_vars_in_expression)
 
 TestItem = namedtuple("TestItem", ["expression", "input", "target"])
 GradTestItem = namedtuple("GradTestItem", ["expression", "input", "target", "gradient"])
@@ -29,7 +27,7 @@ def tf_arr(*x):
     return tf.constant([*x], dtype=tf.keras.backend.floatx())
 
 
-class test_arithmetic_expression_layer(TestCaseTimer):
+class test_arithmetic_expression_layer(test_utility.TestCase):
     def _create_layer(self, expression, *args, **kwargs):
         layer = ArithmeticExpressionLayer(expression, *args, **kwargs)
         return layer
@@ -165,6 +163,7 @@ class test_arithmetic_expression_layer(TestCaseTimer):
     test_items_for_calling = [
         TestItem(expression="a", input=[tf_arr([1])], target=tf_arr([1])),
         TestItem(expression="a+1", input=[tf_arr([1, 2])], target=tf_arr([2, 3])),
+        TestItem(expression="a * 1.5e2", input=[tf_arr([1], [2], [3])], target=tf_arr([1], [2], [3]) * 150),
         TestItem(expression="[a, b+1]", input=[tf_arr([3]), tf_arr([12])], target=tf_arr([[3, 13]])),
         TestItem(expression="[dose, 0, 0]", input=[tf_arr([24])], target=tf_arr([[24, 0, 0]])),
         TestItem(
@@ -176,13 +175,6 @@ class test_arithmetic_expression_layer(TestCaseTimer):
             target=tf_arr([[1, 3], [2, 5], [3, 7]]),
         ),
     ]
-
-    def test_set_eval_fn(self):
-        for expression, tensors_to_evaluate, target in test_arithmetic_expression_layer.test_items_for_calling:
-            layer = self._create_layer(expression)
-            layer.build(None)
-            result = layer.eval_fn(tensors_to_evaluate)
-            self.assertNpEqual(result.numpy(), target.numpy())
 
     def test_call(self):
         for expression, tensors_to_evaluate, target in test_arithmetic_expression_layer.test_items_for_calling:

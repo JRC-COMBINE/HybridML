@@ -8,7 +8,11 @@ algorithm = "cvodes"
 
 
 def to_numpy(*tensors):
-    return [t.numpy() for t in tensors]
+    result = [t.numpy() if hasattr(t, "numpy") and callable(getattr(t, "numpy")) else t for t in tensors]
+    if len(tensors) == 1:
+        return result[0]
+    else:
+        return result
 
 
 class CasadiLinearOdeLayer(BaseLinearOdeLayer):

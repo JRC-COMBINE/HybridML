@@ -1,0 +1,62 @@
+{
+    "saved_model_format": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            }
+        ],
+        "nodes": [
+            {
+                "id": "xxx",
+                "type": "existing_model",
+                "model_path": "./tests/temp/models/saved_model_format_model",
+                "inputs": [
+                    "a"
+                ],
+                "outputs": [
+                    "output"
+                ]
+            }
+        ],
+        "outputs": [
+            "output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "h5_format": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            }
+        ],
+        "nodes": [
+            {
+                "id": "xxx",
+                "type": "existing_model",
+                "model_path": "./tests/temp/models/h5_format_model.h5",
+                "inputs": [
+                    "a"
+                ],
+                "outputs": [
+                    "output"
+                ]
+            }
+        ],
+        "outputs": [
+            "output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    }
+}

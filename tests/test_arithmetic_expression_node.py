@@ -6,14 +6,16 @@ import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 
+import test_utility
+
 sys.path.append(os.path.dirname(__file__))
 sys.path.append(os.path.split(os.path.dirname(__file__))[0])
-from HybridML.building.nodes.ArithmeticExpression import ArithmeticExpressionNodeBuilder  # noqa: E402
+from HybridML.building.nodes.ArithmeticExpression import \
+    ArithmeticExpressionNodeBuilder  # noqa: E402
 from HybridML.ModelCreator import KerasModelCreator  # noqa: E402
 from HybridML.NodeRegistry import DefaultNodeRegistry  # noqa: E402
-from HybridML.parsing.nodes.ArithmeticExpression import ArithmeticExpressionNodeParser  # noqa: E402
-
-import test_utility  # noqa: E402
+from HybridML.parsing.nodes.ArithmeticExpression import \
+    ArithmeticExpressionNodeParser  # noqa: E402
 
 
 class arithmetic_expression_node_registry:
@@ -68,7 +70,7 @@ class arithmetic_tester:
         return self.model_creator.generate_models([model_json])[0]
 
 
-class test_arithmetric_expression_node(test_utility.TestCaseTimer):
+class test_arithmetric_expression_node(test_utility.TestCase):
     """Integration Test for ArithmeticExpressionLayer and ArithmeticExpressionNode inside HybridML's structure"""
 
     def __init__(self, methodName="runTest"):
@@ -77,7 +79,7 @@ class test_arithmetric_expression_node(test_utility.TestCaseTimer):
 
     def test_simple_building(self):
         res = self.tester.create_predict_model("out1 = x1+x2", 1, 1)[0]
-        test_utility.assertClose(self, res, 2)
+        self.assertClose(2, res)
 
     def test_binary_expressions(self):
         vals = []
@@ -85,13 +87,13 @@ class test_arithmetric_expression_node(test_utility.TestCaseTimer):
         vals.extend(self.tester.fill_expressions(-10, 1))
         for val in tqdm(vals):
             prediction = self.tester.create_predict_model(val["expression"], val["x1"], val["x2"])
-            test_utility.assertClose(self, prediction, val["result"])
+            self.assertClose(val["result"], prediction)
 
     def test_w_const(self):
         vals = self.tester.fill_expressions(10, 2, "x1", "2")
         for val in tqdm(vals):
             prediction = self.tester.create_predict_model(val["expression"], val["x1"], val["x2"])
-            test_utility.assertClose(self, prediction[0], val["result"])
+            self.assertClose(val["result"], prediction[0])
 
     def test_two_constants(self):
         self.assertRaises(Exception, lambda: self.tester.create_predict_model("1+2", 0, 0))
@@ -142,7 +144,7 @@ class test_arithmetric_expression_node(test_utility.TestCaseTimer):
             model2 = tf.keras.models.load_model(file, custom_objects=DefaultNodeRegistry.custom_objects)
             prediction1 = self.tester.predict_model(model1, val["x1"], val["x2"])
             prediction2 = self.tester.predict_model(model2, val["x1"], val["x2"])
-            test_utility.assertClose(self, prediction1, prediction2)
+            self.assertClose(prediction1, prediction2)
             os.remove(file)
 
 

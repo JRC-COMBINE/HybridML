@@ -1,0 +1,189 @@
+{
+    "simple_node": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "x_init",
+                "size": 2
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "ode",
+                "rhs": "1",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "const_ode": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "x_init",
+                "size": 1
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "ode",
+                "rhs": "1",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "single_parameter": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 1
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "ode",
+                "rhs": "a",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "multiple_parameters": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            },
+            {
+                "id": "b",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 1
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "ode",
+                "rhs": "b+3*a",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    },
+    "test_training": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 1
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "bb",
+                "type": "nn",
+                "inputs": [
+                    "a"
+                ],
+                "outputs": [
+                    "nn_out"
+                ],
+                "layers": [
+                    {
+                        "size": 1,
+                        "activation": null
+                    }
+                ]
+            },
+            {
+                "id": "linear_ode",
+                "type": "ode",
+                "rhs": "nn_out",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
+    }
+}

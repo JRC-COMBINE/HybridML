@@ -5,7 +5,7 @@
     "data_files": [
         {
             "name": "data",
-            "path": "./theoph.csv",
+            "path": "./data.csv",
             "x": [
                 1
             ],

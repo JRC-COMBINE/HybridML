@@ -6,7 +6,6 @@
   - [Demos](#demos)
     - [Simple Demo](#simple-demo)
     - [Extrapolation Demo](#extrapolation-demo)
-    - [Theophylline Demo](#theophylline-demo)
     - [Fluvoxamin Demo](#fluvoxamin-demo)
   - [Poject Structure](#poject-structure)
   - [Software Architecture](#software-architecture)
@@ -78,12 +77,6 @@ assert np.all(prediction - loaded_model_prediction < 1e-5)
 [extrapolation_demo.py](demo/extrapolation_demo/extrapolation_demo.py)
 Contains a project with at hybrid model and a black box model.
 It demonstrates the project api and anecdotally shows the extrapolation capability of hybrid models.
-
-### Theophylline Demo
-[theoph_demo.py](demo/theoph/theoph_demo.py)
-This demo contains a complex model, that uses neural nets and mechanistic models to estimate parameters for an ode system.
-The model resembles a two compartiment model for drug concentration in the blood system.
-It makes use of the Theophylline dataset, that comes with the R language.
 
 ### Fluvoxamin Demo
 [flux_demo.py](demo/flux/flux_demo.py),

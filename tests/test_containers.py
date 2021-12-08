@@ -4,16 +4,16 @@ import unittest
 
 import numpy as np
 
-sys.path.append(os.path.dirname(__file__))
+import test_utility
+from test_utility import delete_folder, load_relative_json
+
 sys.path.append(os.path.split(os.path.dirname(__file__))[0])
 
 from HybridML.ModelCreator import KerasModelCreator  # noqa: E402
 from HybridML.NodeRegistry import DefaultNodeRegistry  # noqa: E402
 
-from test_utility import TestCaseTimer, delete_folder, load_relative_json  # noqa: E402
 
-
-class test_containers(TestCaseTimer):
+class test_containers(test_utility.TestCase):
     def __init__(self, methodName="runTest"):
         super().__init__(methodName)
         self.data = load_relative_json(__file__)

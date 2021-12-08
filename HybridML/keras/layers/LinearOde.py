@@ -50,9 +50,9 @@ class BaseLinearOdeLayer(tf.keras.layers.Layer):
         dim: dimension of samples
         n_t: number of points in time
         Parameters:
-            inputs[-2]: x_init (n x dim): Initial value for ode at t=0
-            inputs[-1]: time_series (n x n_t): Time series to solve the ode for
             inputs[0]: system_matrix (n x dim x dim): System matrix only if not constant.
+            inputs[1]: x_init (n x dim): Initial value for ode at t=0
+            inputs[2]: time_series (n x n_t): Time series to solve the ode for
         Returns:
             result (n x n_t x dim)
         """
