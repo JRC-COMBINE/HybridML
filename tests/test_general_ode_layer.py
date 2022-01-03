@@ -166,6 +166,23 @@ class test_general_ode_layer(test_utility.TestCase):
         d["expected_shape"] = d["expected"].shape
         self.build_and_test(d)
 
+    def test_multiple_samples_with_parameter(self):
+        d = {
+            "expression": "a",
+            "x0": np.array([[0], [0], [0]]),
+            "t": np.array([[1, 2, 3], [2, 4, 6], [3, 6, 9]]),
+            "ps": np.array([0, 1, 2]),
+        }
+        d["expected"] = np.array(
+            [
+                [[0.0], [0.0], [0.0]],
+                [[2.0], [4.0], [6.0]],
+                [[6.0], [12.0], [18.0]],
+            ]
+        )
+        d["expected_shape"] = d["expected"].shape
+        self.build_and_test(d)
+
     def test_multiple_parameters(self):
         d = {
             "expression": "a+b",
@@ -177,6 +194,17 @@ class test_general_ode_layer(test_utility.TestCase):
         d["expected_shape"] = d["expected"].shape
         self.build_and_test(d)
 
+    def test_multiple_dimensions(self):
+        d = {
+            "expression": "[a,b,c]",
+            "x0": np.array([[0, 0, 0]]),
+            "t": np.array([[1, 2, 3]]),
+            "ps": [np.array([1]), np.array([2]), np.array([3])],
+        }
+        d["expected"] = np.array([[[1, 2, 3], [2, 4, 6], [3, 6, 9]]])
+        d["expected_shape"] = d["expected"].shape
+        self.build_and_test(d)
+
 
 def to_tf(var):
     return tf.constant(var, dtype=tf.float64)
@@ -184,6 +212,8 @@ def to_tf(var):
 
 if __name__ == "__main__":
     t = test_general_ode_layer()
+    t.test_multiple_samples_with_parameter()
+    t.test_multiple_dimensions()
     t.test_multiple_parameters()
     t.test_multiple_samples()
     t.test_parameter_gradients()
