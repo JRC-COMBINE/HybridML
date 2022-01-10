@@ -1,14 +1,12 @@
-# Hybid Model Creator - create hybrid tensorflow models from json
-[![pipeline status](https://gitlab.bayer.com/appli/hybrid-modelling/badges/master/pipeline.svg)](https://gitlab.bayer.com/appli/hybrid-modelling/-/commits/master)
+# HybridML - Open Source Platform for Hybrid Modeling
 
-Creates hybrid tensorflow models from a json description.
-
-- [Hybid Model Creator - create hybrid tensorflow models from json](#hybid-model-creator---create-hybrid-tensorflow-models-from-json)
+- [HybridML - Open Source Platform for Hybrid Modeling](#HybridML---Open-Source-Platform-for-Hybrid-Modeling)
   - [Introduction](#introduction)
   - [Technologies](#technologies)
   - [Demos](#demos)
     - [Simple Demo](#simple-demo)
     - [Extrapolation Demo](#extrapolation-demo)
+    - [Theophylline Demo](#theophylline-demo)
     - [Fluvoxamin Demo](#fluvoxamin-demo)
   - [Poject Structure](#poject-structure)
   - [Software Architecture](#software-architecture)
@@ -17,7 +15,7 @@ Creates hybrid tensorflow models from a json description.
       - [2. Building](#2-building)
     - [NodeBuilder, NodeParser and Node](#nodebuilder-nodeparser-and-node)
   - [Fluvoxamine](#fluvoxamine)
-  - [How to define a model-json](#how-to-define-a-model-json)
+  - [Constructing Models](#constructing-models)
   - [How to implement new node types](#how-to-implement-new-node-types)
 ## Introduction
 This tool aims to create hybrid machine learning models using tensorflow and keras.
@@ -81,8 +79,14 @@ assert np.all(prediction - loaded_model_prediction < 1e-5)
 Contains a project with at hybrid model and a black box model.
 It demonstrates the project api and anecdotally shows the extrapolation capability of hybrid models.
 
+### Theophylline Demo
+[theoph_demo.py](demo/theoph/theoph_demo.py)
+This demo contains a complex model, that uses neural nets and mechanistic models to estimate parameters for an ode system.
+The model resembles a two compartiment model for drug concentration in the blood system.
+It makes use of the Theophylline dataset, that comes with the R language.
+
 ### Fluvoxamin Demo
-[flux_demo.py](demo/flux/flux_demo.py), 
+[flux_demo.py](demo/flux/flux_demo.py),
 [structured_flux_demo.py](demo/flux/structured_flux_demo.py)
 Similar type of model to the theophylline demo.
 Contains a more refined model for a use case that is closer to the industry.
@@ -158,7 +162,7 @@ The outputs of the blackbox are transposed and scaled to initial guesses.
 The fluvoxamine use case can be found in [flux_demo.py](demo/flux/flux_demo.py).
 
 
-## How to define a model-json
+## Constructing Models
 See [model-json.md](model-json.md).
 
 ## How to implement new node types
