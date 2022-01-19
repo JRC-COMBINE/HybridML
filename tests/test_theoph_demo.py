@@ -13,7 +13,7 @@ sys.path.append(theoph_path)
 from theoph_demo import main  # noqa: E402
 
 
-class test_theoph_demo(test_utility.TestCaseTimer):
+class test_theoph_demo(test_utility.TestCase):
     def test_theoph_no_exceptions(self):
         main(plot=False)
 

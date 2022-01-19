@@ -43,7 +43,9 @@ class GeneralOdeNode(BaseOdeNode):
 
     def get_parameter_ids(self):
         if self.parameter_ids is None:
-            self.parameter_ids = sorted(find_vars_in_expression(self.rhs))
+            self.parameter_ids = sorted(find_vars_in_expression(self.rhs))            
+            if "x" in self.parameter_ids:
+                self.parameter_ids.remove("x")
         return self.parameter_ids
 
 
