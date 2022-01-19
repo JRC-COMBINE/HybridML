@@ -72,6 +72,21 @@ class test_general_ode_node(test_utility.TestCase):
         self.assertEqual(result.shape, expected_shape)
         self.assertClose(expected, result)
 
+
+    def test_multiple_dimensions(self):
+        x0 = np.array([[0,0,0]])
+        t = np.array([[1, 2, 3]])
+        a = np.array([[1]])
+        b = np.array([[2]])
+        c = np.array([[3]])
+        expected = np.array([[[1, 2, 3], [2, 4, 6], [3, 6, 9]]])
+        expected_shape = expected.shape
+
+        model = self.creator.load_model_by_id("multiple_dimensions")
+        result = model.predict([a, b, c, x0, t])
+        self.assertEqual(result.shape, expected_shape)
+        self.assertClose(expected, result)
+
     def test_training(self):
         random = np.random.RandomState(seed=42)
         n_samples = 100
@@ -91,6 +106,7 @@ class test_general_ode_node(test_utility.TestCase):
 
 if __name__ == "__main__":
     t = test_general_ode_node()
+    t.test_multiple_dimensions()
     t.test_multiple_parameters()
     t.test_multiple_samples()
     t.test_constant_rhs()

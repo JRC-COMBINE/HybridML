@@ -185,5 +185,47 @@
         "loss": "mse",
         "optimizer": "adam",
         "metrics": []
+    },
+    "multiple_dimensions": {
+        "name": "test_training",
+        "comment": "blabla",
+        "inputs": [
+            {
+                "id": "a",
+                "size": 1
+            },
+            {
+                "id": "b",
+                "size": 1
+            },{
+                "id": "c",
+                "size": 1
+            },
+            {
+                "id": "x_init",
+                "size": 3
+            },
+            {
+                "id": "t",
+                "size": null
+            }
+        ],
+        "nodes": [
+            {
+                "id": "linear_ode",
+                "type": "ode",
+                "rhs": "[a,b,c]",
+                "time_series_input": "t",
+                "initial_value_input": "x_init",
+                "output": "ode_output"
+            }
+        ],
+        "outputs": [
+            "ode_output"
+        ],
+        "additional_outputs": [],
+        "loss": "mse",
+        "optimizer": "adam",
+        "metrics": []
     }
 }
