@@ -16,7 +16,7 @@
     - [NodeBuilder, NodeParser and Node](#nodebuilder-nodeparser-and-node)
   - [Fluvoxamine](#fluvoxamine)
   - [Constructing Models](#constructing-models)
-  - [How to implement new node types](#how-to-implement-new-node-types)
+  - [Implementing new node types](#implementing-new-node-types)
   - [Citation](#citation)
 ## Introduction
 This tool aims to create hybrid machine learning models using tensorflow and keras.
@@ -166,7 +166,7 @@ The fluvoxamine use case can be found in [flux_demo.py](demo/flux/flux_demo.py).
 ## Constructing Models
 See [model-json.md](model-json.md).
 
-## How to implement new node types
+## Implementing new node types
 See [create-nodes.md](create-nodes.md).
 
 # Citation
