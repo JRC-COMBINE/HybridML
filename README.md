@@ -17,6 +17,7 @@
   - [Fluvoxamine](#fluvoxamine)
   - [Constructing Models](#constructing-models)
   - [How to implement new node types](#how-to-implement-new-node-types)
+  - [Citation](#citation)
 ## Introduction
 This tool aims to create hybrid machine learning models using tensorflow and keras.
 In this context hybrid means, that the models consist of submodels that are connected in a feed forward graph.
@@ -167,3 +168,22 @@ See [model-json.md](model-json.md).
 
 ## How to implement new node types
 See [create-nodes.md](create-nodes.md).
+
+# Citation
+Our paper can be retrieved at https://doi.org/10.1016/j.compchemeng.2022.107736.
+If you use HybridML in your work, please cite our paper using the following citation.
+```bibtex
+@article{MERKELBACH2022107736,
+title = {HybridML: Open source platform for hybrid modeling},
+journal = {Computers & Chemical Engineering},
+volume = {160},
+pages = {107736},
+year = {2022},
+issn = {0098-1354},
+doi = {https://doi.org/10.1016/j.compchemeng.2022.107736},
+url = {https://www.sciencedirect.com/science/article/pii/S0098135422000771},
+author = {Kilian Merkelbach and Artur M. Schweidtmann and Younes Müller and Patrick Schwoebel and Adel Mhamdi and Alexander Mitsos and Andreas Schuppert and Thomas Mrziglod and Sebastian Schneckener},
+keywords = {Hybrid modeling, Machine learning, Modeling tools, Tensorflow, Python, Pharmacokinetics},
+abstract = {Hybrid modelling, i.e., the combination of data-driven modelling with mechanistic model components, reduces the data demand and enables extrapolation of data-driven models. However, building, training and evaluation of hybrid models is cumbersome with current frameworks. We developed HybridML, an open-source modeling platform, in which hybrid models can be trained, i.e., combinations of artificial neural networks, arithmetic expressions, and differential equations. We employ TensorFlow for artificial neural network training and Casadi to integrate ordinary differential equations and provide gradients of differential model equations enabling continuous time representations. HybridML provides also a JSON interface for the model development. We apply HybridML to an industrial case study, in which the trained model is used to predict drug concentrations over time, based on physiological information about the patients. To demonstrate its versatility, we also present a nonlinear application, where HybridML is used to model the spread of the COVID-19 pandemic in German federal states based on the state’s socio-economic attributes.}
+}
+```
