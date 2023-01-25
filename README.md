@@ -8,7 +8,7 @@
     - [Extrapolation Demo](#extrapolation-demo)
     - [Theophylline Demo](#theophylline-demo)
     - [Fluvoxamin Demo](#fluvoxamin-demo)
-  - [Poject Structure](#poject-structure)
+  - [Project Structure](#project-structure)
   - [Software Architecture](#software-architecture)
     - [Creation](#creation)
       - [1. Parsing](#1-parsing)
@@ -93,7 +93,7 @@ Similar type of model to the theophylline demo.
 Contains a more refined model for a use case that is closer to the industry.
 
 
-## Poject Structure
+## Project Structure
 HybridML can also be used with the project architecture.
 A project contains a name, one or multiple models and one or multiple datasources.
 A new model can be created by using:
